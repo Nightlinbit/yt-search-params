@@ -100,17 +100,17 @@ function searchParams(params) {
          "uploadDate": [1, 0],
          "type": [2, 0],
          "duration": [3, 0],
-         "isHd": [4, 0],
+         "isHD": [4, 0],
          "hasSubtitles": [5, 0],
          "isCreativeCommons": [6, 0],
-         "is3d": [7, 0],
+         "is3D": [7, 0],
          "isLive": [8, 0],
          "isPurchased": [9, 0],
          "is4K": [14, 0],
          "is360Degree": [15, 0],
          "hasLocation": [23, 0],
-         "isHdr": [25, 0],
-         "isVr180": [26, 0]
+         "isHDR": [25, 0],
+         "isVR180": [26, 0]
       }],
       "index": [9, 0],
       "something": [61, 2] // mari real :)
