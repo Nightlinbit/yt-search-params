@@ -83,7 +83,7 @@ var quickPb = {
    },
    toHex: function (str) {
       var hex, result = "";
-      for (i = 0; i < str.length; i++) {
+      for (var i = 0; i < str.length; i++) {
          hex = str.charCodeAt(i).toString(16);
          result += hex;
       }
@@ -136,10 +136,10 @@ function searchParams(params) {
       "thisYear": 4
    };
    const typeEnums = {
-      "video": 0,
-      "channel": 1,
-      "playlist": 2,
-      "movie": 3
+      "video": 1,
+      "channel": 2,
+      "playlist": 3,
+      "movie": 4
    };
    const durationEnums = {
       "short": 0,
@@ -158,7 +158,7 @@ function searchParams(params) {
       params.filter.uploadDate = uploadDateEnums[params.filter.uploadDate];
    }
    if (params.filter && params.filter.type && typeof params.filter.type == "string") {
-      params.filter.type = durationEnums[params.filter.type];
+      params.filter.type = typeEnums[params.filter.type];
    }
    if (params.filter && params.filter.duration && typeof params.filter.duration == "string") {
       params.filter.duration = durationEnums[params.filter.duration];
@@ -168,8 +168,15 @@ function searchParams(params) {
    // set that just in case
    (params.index != null && !params.something) && (params["something"] = "");
    
+   // for some reason, indexed results also do not work between 128 and 255
+   // this may be the case with every multiple of 2, but it's hard to test
+   // so just patch for this condition
+   if (params.index != null && (params.index > 127 && params.index < 256) ) {
+      params.index = 256 + (params.index - 128);
+   }
+   
    var response = quickPb.compile(params, msgFields);
-   response = b16tob64(response);
+   response = b16tob64(response).replace(/\+/g, "-").replace(/\//g, "_").replace(/\=/g, "%3D");
    return response;
    
 }
